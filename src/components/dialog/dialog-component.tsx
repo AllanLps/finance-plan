@@ -7,6 +7,7 @@ import {
   DialogContent,
   DialogDescription,
   DialogTitle,
+  DialogFooter,
 } from "../ui/dialog";
 
 import { RadioGroup } from "../ui/radio-group";
@@ -22,7 +23,8 @@ import {
   SelectItem,
   SelectGroup,
 } from "../ui/select";
-import { Calendar } from "../calendar/calendar";
+import { CalendarComponent } from "../calendar/calendar-component";
+import { Textarea } from "../ui/textarea";
 
 export function DialogComponent() {
   return (
@@ -139,9 +141,24 @@ export function DialogComponent() {
             </div>
 
             <div>
-              <Calendar />
+              <CalendarComponent />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Observações</Label>
+              <Textarea
+                id="notes"
+                placeholder="Adicione observações sobre esta transação (opicional)"
+                className="min-h[80px]"
+              />
             </div>
           </div>
+          <DialogFooter>
+            <Button type="button" variant="outline">
+              Cancelar
+            </Button>
+            <Button>Adicionar Transação</Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
