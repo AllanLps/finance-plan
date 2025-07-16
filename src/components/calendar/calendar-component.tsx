@@ -12,7 +12,7 @@ import { Calendar } from "../ui/calendar";
 export function CalendarComponent() {
   const [date, setDate] = useState<Date>(new Date());
   return (
-    <div>
+    <div className="w-full">
       {" "}
       <Label>Data da Transação</Label>
       <Popover>
