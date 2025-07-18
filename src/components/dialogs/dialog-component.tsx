@@ -1,3 +1,5 @@
+"use client";
+
 import { PlusCircle } from "lucide-react";
 import { Button } from "../ui/button";
 import {
@@ -18,8 +20,15 @@ import {
   SelectItem,
   SelectTrigger,
 } from "../ui/select";
+import { useState } from "react";
 
 export function DialogComponent() {
+  const [type, setType] = useState("expense");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setType("expense");
+  };
   return (
     <Dialog>
       <DialogTrigger>
@@ -38,7 +47,11 @@ export function DialogComponent() {
         <form className="space-y-4">
           <div className="space-y-2">
             <Label>Tipo de transação</Label>
-            <RadioGroup className="flex mt-3 space-x-4">
+            <RadioGroup
+              value={type}
+              onValueChange={setType}
+              className="flex mt-3 space-x-4"
+            >
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="income" id="income" />
                 <Label className="font-medium text-green-600">Receita</Label>
@@ -84,11 +97,27 @@ export function DialogComponent() {
                   <SelectValue placeholder="Selecione a categoria" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="salary">Salário</SelectItem>
-                  <SelectItem value="freelance">Freelance</SelectItem>
-                  <SelectItem value="investment">Investimentos</SelectItem>
-                  <SelectItem value="bonus">Bônus</SelectItem>
-                  <SelectItem value="other-income">Outros</SelectItem>
+                  {type === "income" ? (
+                    <>
+                      <SelectItem value="salary">Salário</SelectItem>
+                      <SelectItem value="freelance">Freelance</SelectItem>
+                      <SelectItem value="investment">Investimentos</SelectItem>
+                      <SelectItem value="bonus">Bônus</SelectItem>
+                      <SelectItem value="other-income">Outros</SelectItem>
+                    </>
+                  ) : (
+                    <>
+                      <SelectItem value="food">Alimentação</SelectItem>
+                      <SelectItem value="transport">Transporte</SelectItem>
+                      <SelectItem value="housing">Moradia</SelectItem>
+                      <SelectItem value="leisure">Lazer</SelectItem>
+                      <SelectItem value="health">Saúde</SelectItem>
+                      <SelectItem value="education">Educação</SelectItem>
+                      <SelectItem value="shopping">Compras</SelectItem>
+                      <SelectItem value="bills">Contas</SelectItem>
+                      <SelectItem value="other-expense">Outros</SelectItem>
+                    </>
+                  )}
                 </SelectContent>
               </Select>
             </div>
