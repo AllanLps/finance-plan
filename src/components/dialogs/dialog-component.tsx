@@ -1,11 +1,12 @@
 "use client";
 
-import { PlusCircle } from "lucide-react";
+import { CalendarIcon, PlusCircle } from "lucide-react";
 import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -21,9 +22,16 @@ import {
   SelectTrigger,
 } from "../ui/select";
 import { useState } from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { Calendar } from "../ui/calendar";
+import { Textarea } from "../ui/textarea";
 
 export function DialogComponent() {
   const [type, setType] = useState("expense");
+  const [date, setDate] = useState<Date>(new Date());
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,7 +77,6 @@ export function DialogComponent() {
               <Input
                 id="description"
                 placeholder="Ex: Supermercado, Salário..."
-                required
               />
             </div>
             <div className="space-y-2">
@@ -83,16 +90,15 @@ export function DialogComponent() {
                   step="0.01"
                   placeholder="0,00"
                   className="pl-8"
-                  required
                 />
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label>Categoria *</Label>
-              <Select required>
+              <Select>
                 <SelectTrigger>
                   <SelectValue placeholder="Selecione a categoria" />
                 </SelectTrigger>
@@ -121,7 +127,65 @@ export function DialogComponent() {
                 </SelectContent>
               </Select>
             </div>
+            <div className="space-y-2">
+              <Label>Conta *</Label>
+              <Select>
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione a conta" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="checking">Conta Corrente - BB</SelectItem>
+                  <SelectItem value="savings">Poupança - CEF</SelectItem>
+                  <SelectItem value="investment">Investimento - XP</SelectItem>
+                  <SelectItem value="nubank">Cartão Nubank</SelectItem>
+                  <SelectItem value="itau">Cartão Itaú</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
+
+          <div className="space-y-2">
+            <Label>Data da transação</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "w-full justify-start text-left font-normal",
+                    !date && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {date
+                    ? format(date, "PPP", { locale: ptBR })
+                    : "Selecionar data"}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent>
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={(date) => date && setDate(date)}
+                  locale={ptBR}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Observações</Label>
+            <Textarea
+              id="notes"
+              placeholder="Adicione observações sobre esta transação (opcional)"
+              className="min-h-[80px]"
+            />
+          </div>
+          <DialogFooter>
+            <Button type="button" variant="outline">
+              Cancelar
+            </Button>
+            <Button type="submit">Adicionar Transação</Button>
+          </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>
