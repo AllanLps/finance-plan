@@ -29,7 +29,8 @@ import { ptBR } from "date-fns/locale";
 import { Calendar } from "../ui/calendar";
 import { Textarea } from "../ui/textarea";
 
-export function DialogComponent() {
+export function NewTransactionDialog() {
+  const [open, setOpen] = useState(false);
   const [type, setType] = useState("expense");
   const [date, setDate] = useState<Date>(new Date());
 
@@ -38,7 +39,7 @@ export function DialogComponent() {
     setType("expense");
   };
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
         <Button>
           <PlusCircle className="mr-2 h-4 w-4" />
@@ -181,7 +182,11 @@ export function DialogComponent() {
             />
           </div>
           <DialogFooter>
-            <Button type="button" variant="outline">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setOpen(false)}
+            >
               Cancelar
             </Button>
             <Button type="submit">Adicionar Transação</Button>
